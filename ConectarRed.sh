@@ -12,7 +12,7 @@ read answer
 
 if [ $answer -eq 1 ]
 then 
-	ip link set $int up
+	sudo ip link set $int up
 	echo "interfaz activada exitosamente"
 	echo "¿La interfaz es de tipo cableada o inalámbrica? 1: cableada, 0: inlámbrica" 
 	read caboin
