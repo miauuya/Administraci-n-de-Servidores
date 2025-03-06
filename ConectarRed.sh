@@ -20,7 +20,7 @@ then
 	then
 		"¿La configuración será estática o dinámica? 1: estática, 0: dinámica"
 		read estodin
-		if [ $estodin == 1 ]
+		if [ $estodin -eq 1 ]
 		then
 			echo "Introduzca la dirección ip con su prefijo: (Ej. x.x.x.x/x)"
 			read ipman
