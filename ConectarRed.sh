@@ -12,7 +12,7 @@ read answer
 
 if [ $answer -eq 1 ]
 then 
-	sudo ip link set $int up
+	ip link set $int up
 	echo "interfaz activada exitosamente"
 	echo "¿La interfaz es de tipo cableada o inalámbrica? 1: cableada, 0: inlámbrica" 
 	read caboin
@@ -24,11 +24,11 @@ then
 		then
 			echo "Introduzca la dirección ip con su prefijo: (Ej. x.x.x.x/x)"
 			read ipman
-			sudo ip addr add $ipman dev $int
+			ip addr add $ipman dev $int
 			echo "Introduzca la dirección ip del gateway: (Ej x.x.x.x)"
 			read gw
-			sudo ip route add default via $gw
-			sudo /etc/init.d/networking restart
+			ip route add default via $gw
+			/etc/init.d/networking restart
 			echo "dirección configurada exitosamente"	
 		elif [ $estodin -eq 0 ]
 		then 
@@ -44,9 +44,9 @@ then
 		read red
 		echo "Introduzca la contraseña: "
 		read pswd
-		sudo wpa_passphrase $red $pswd | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
-		sudo wpa_supplicant -B -i $int -c /etc/wpa_supplicant/wpa_supplicant.conf
-		sudo dhclient $int
+		wpa_passphrase $red $pswd | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+		wpa_supplicant -B -i $int -c /etc/wpa_supplicant/wpa_supplicant.conf
+		dhclient $int
 	fi
 
 
