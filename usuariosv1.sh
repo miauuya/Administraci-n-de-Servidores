@@ -12,8 +12,7 @@ crearUser() {
 		read -s -p "Contraseña: " psswd
 		echo ""
 		if [[ ${#psswd} -ge 10 && "${psswd}" == *[A-Z]* && "${psswd}" == *[a-z]* && "${psswd}" == *[0-9]* ]]; then
-			echo "Vuelva a escribir la contraseña: "
-			read -s passwd2
+			read -s -p "Vuelva a escribir la contraseña: " passwd2
 			if test "$psswd" == "$passwd2"; then
 				break
 			else
@@ -28,9 +27,30 @@ crearUser() {
 		echo "$user:$psswd" | chpasswd
 		chown "$user" "$dir/$userdir"
 		echo "Usuario creado con éxito. Los valores del usuario fueron asignados por defecto, para más modificaciones consulte man usermod"
+		asignarCuota "$user"
 	else
 		echo "Usuario existente"
 	fi
+}
+
+asignarCuota() {
+	local user="$1"
+	echo "¿Desea asignarle cuota al usuario? [y/n]"
+	read opCuota
+	case $opCuota in
+		'y' )
+			read -p "Cantidad de cuota soft: " soft
+			read -p "Cantidad de cuota hard: " hard
+			setquota -u "$user" $soft $hard 0 0 /
+			agregarSudo "$user"
+		;;
+		'n' )
+			return 0
+		;; 
+		* )
+			echo "Opción inválida"
+			exit 1
+	esac
 }
 
 
@@ -40,6 +60,7 @@ borrarUser() {
 		echo "El usuario no existe"
 	else
 		deluser "$user"
+		rm /tmp/permisos_"$user"
 		read -p "¿Desea eliminar la carpeta del usuario? [y/n] " opcion
 		if test "$opcion" == "y"; then
 			read -p "Introduzca la ruta a la carpeta del usuario: " dir
