@@ -41,7 +41,7 @@ asignarCuota() {
 		'y' )
 			read -p "Cantidad de cuota soft: " soft
 			read -p "Cantidad de cuota hard: " hard
-			setquota -u "$user" $soft $hard 0 0 /
+			setquota -u "$user" $soft $hard 0 0 / 
 			agregarSudo "$user"
 		;;
 		'n' )
@@ -54,8 +54,6 @@ asignarCuota() {
 }
 
 
-
-
 agregarSudo() {
 	local user="$1"
 	echo "¿Desea agregarle al usuarios permisos de ejecución? [y/n]"
@@ -65,13 +63,11 @@ agregarSudo() {
 			read -p "¿Desea asignar permisos especiales? [y/n]" perm
 
 			if [[ "$perm" == 'y' ]]; then
-				echo "Introduzca los comando a los que se van a otorgar permisos? [separador con espacios]"
+				echo "Introduzca los comando a los que se van a otorgar permisos? [separador con comas y espacio]"
 				read "comandos"
-				
-				for i in "$comandos"; do
-					echo "$user ALL = (ALL) NOPASSWD: $i"
-				done > /tmp/permisos_"$user"
-				cp /tmp/permisos_"$user"* /etc/sudoers.d/.
+
+    				echo $"user ALL=(ALL) $comandos" > /tmp/permisos_"$user"
+				cp /tmp/permisos_"$user" /etc/sudoers.d/.
 			else
 				echo "$user ALL = (ALL) ALL" > /tmp/permiso_"$user" 
 				cp   /tmp/permiso_"$user" /etc/sudoers.d/.
