@@ -87,7 +87,7 @@ borrarUser() {
 		echo "El usuario no existe"
 	else
 		deluser "$user"
-		rm /tmp/permisos_"$user"
+		rm /etc/sudoers.d/permisos_"$user"
 		read -p "¿Desea eliminar la carpeta del usuario? [y/n] " opcion
 		if test "$opcion" == "y"; then
 			read -p "Introduzca la ruta a la carpeta del usuario: " dir
