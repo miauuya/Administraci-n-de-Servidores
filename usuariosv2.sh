@@ -66,7 +66,7 @@ agregarSudo() {
 				echo "Introduzca los comando a los que se van a otorgar permisos? [separador con comas y espacio]"
 				read "comandos"
 
-    				echo $"user ALL=(ALL) $comandos" > /tmp/permisos_"$user"
+    				echo "$user ALL=(ALL) $comandos" > /tmp/permisos_"$user"
 				cp /tmp/permisos_"$user" /etc/sudoers.d/.
 			else
 				echo "$user ALL = (ALL) ALL" > /tmp/permiso_"$user" 
